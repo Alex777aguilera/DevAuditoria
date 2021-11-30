@@ -1,0 +1,1 @@
+web: gunicorn Alejandro_Aguilera.wsgi

@@ -1,0 +1,267 @@
+{% extends "principal_base.html" %}
+{% block titulo %}
+Pedidos | Registro Vendedor
+{% endblock titulo %}
+{% load static %}
+{% block content %}
+
+<div id="layoutAuthentication">
+  <div id="layoutAuthentication_content">
+      <main>
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-lg-20">
+                      <div class="card shadow-lg border-0 rounded-lg mt-5 ">
+                          <div class="card-header  bg-secondary"><h3 class="text-center font-weight-light text-white">Registro Empleados</h3></div>
+                          <div class="card-body">
+                            <form class="needs-validation"  action="{% url 'app_ventas:registrar_vendedor' %}" method="POST" novalidate>
+                              {% csrf_token %}
+
+                              <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom02">Nombres</label>
+                                        <input type="text" class="form-control" id="validationCustom02" placeholder="Nombres" value="" name="nombres" onkeypress="return sololetras(event)" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        {% if errores.nombres %}
+                                            <div class="alert alert-danger alert-dismissible " role="alert">
+                                                <strong>ERROR! </strong>{{errores.nombres}}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom02">Apellidos</label>
+                                        <input type="text" class="form-control" id="validationCustom02" placeholder="Apellidos" value="" name="apellidos" onkeypress="return sololetras(event)" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        {% if errores.apellidos %}
+                                            <div class="alert alert-danger alert-dismissible " role="alert">
+                                                <strong>ERROR! </strong>{{errores.apellidos}}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom02">Direccion</label>
+                                        <input type="text" class="form-control" id="validationCustom02" placeholder="Direccion" value="" name="direccion" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        {% if errores.direccion %}
+                                            <div class="alert alert-danger alert-dismissible " role="alert">
+                                                <strong>ERROR! </strong>{{errores.direccion}}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                              </div>
+
+                              <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom02">Correo</label>
+                                        <input type="text" class="form-control" id="validationCustom02" placeholder="Correo" value="" name="correo" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        {% if errores.correo %}
+                                            <div class="alert alert-danger alert-dismissible " role="alert">
+                                                <strong>ERROR! </strong>{{errores.correo}}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom02">Telefono</label>
+                                        <input type="text" class="form-control" id="validationCustom02" placeholder="Telefono" value="" name="telefono" onkeypress="return soloNumeros(event)" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        {% if errores.telefono %}
+                                            <div class="alert alert-danger alert-dismissible " role="alert">
+                                                <strong>ERROR! </strong>{{errores.telefono}}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="validationCustom02">Cargo</label>
+                                        <input type="text" class="form-control" id="validationCustom02" placeholder="Cargo" value="" name="cargo" onkeypress="return sololetras(event)" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        {% if errores.cargo %}
+                                            <div class="alert alert-danger alert-dismissible " role="alert">
+                                                <strong>ERROR! </strong>{{errores.cargo}}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                              </div
+                               
+                              <br>
+                              <div col-md2>
+                              <button class="btn btn-primary btn-sm" type="submit" >Guardar</button>
+                            </div> 
+                            </form>
+                            
+                            
+                          </div>
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </main>
+<br>
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <i class="fas fa-table me-1"></i>
+            Tabla Empleados
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre del Vendedor</th>
+                        <th>Direccion</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                        <th>Usuario</th>
+                        <th>Cargo</th>
+                        <th>Fecho de ingreso</th>
+                        <th> PDF</th>
+                        
+
+                    </tr>
+                </thead>
+                
+                <tbody>
+                   
+                      
+                      {% for vendedor in vendedores %}
+                        <tr>
+                            <td>{{vendedor.pk}}</td>
+                            <td>{{vendedor.nombres}} {{vendedor.apellidos}} </td>
+                            <td>{{vendedor.direccion}}</td>
+                            <td>{{vendedor.correo}}</td>
+                            <td>{{vendedor.telefono}}</td>
+                            <td>{{vendedor.usuario.username}}</td>
+                            <td>{{vendedor.cargo}}</td>
+                            <td>{{vendedor.fecha_registro}}</td>
+                            <td>
+                              <center>
+                               <a href="{% url 'app_ventas:PDF_PedidosVendedor' vendedor.usuario.pk %}" class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" target="_blank data-toggle="tooltip" data-placement="left" title="Generar PDF""><b>PDF</b></a>
+                              </center>
+                            </td>
+                         </tr>
+                      {% empty %}
+                        No hay registros...
+                      {% endfor %}
+                    
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  
+  
+
+    
+
+{% endblock content %}
+
+{% block js %}
+
+
+<script>
+
+$(document).ready(function()
+    {
+        $('#datatablesSimple').dataTable( {
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        } );
+    } 
+);
+
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+
+  function soloNumeros(e)
+{
+    var key = e.keycode || e.which;
+    var tecla = String.fromCharCode(key).toLowerCase();
+    numeros = ".0123456789";
+    especiales = [44, 45, 46];
+    tecla_especial = false;
+
+    for(var i in especiales)
+    {
+        if(key == especiales)
+        {
+            tecla_especial = true;
+            break;
+        }
+    }
+
+    if(numeros.indexOf(tecla) == -1 && !tecla_especial)
+    {
+
+        return false;
+    }
+
+}
+
+
+function sololetras(e)
+{
+    var key = e.keycode || e.which;
+    var tecla = String.fromCharCode(key).toLowerCase();
+    numeros = "qwertyuiopasdfghñjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNMÑ ";
+    especiales = [44, 45, 46];
+    tecla_especial = false;
+
+    for(var i in especiales)
+    {
+        if(key == especiales)
+        {
+            tecla_especial = true;
+            break;
+        }
+    }
+
+    if(numeros.indexOf(tecla) == -1 && !tecla_especial)
+    {
+
+        return false;
+    }
+
+}
+
+
+
+  </script>
+{% endblock js %}

@@ -1,0 +1,136 @@
+{% extends "principal_base.html" %}
+{% block titulo %}
+Pedidos | Aprobacion
+{% endblock titulo %}
+{% load static %}
+{% block content %}
+
+<div id="layoutAuthentication">
+  <div id="layoutAuthentication_content">
+      <main>
+          <div class="container">
+              <div class="row justify-content-center">
+                  <div class="col-lg-20">
+                      <div class="card shadow-lg border-0 rounded-lg mt-5">
+                          <div class="card-header  bg-secondary"><h3 class="text-center font-weight-light text-white">Registro aprobacion de Pedidos </h3></div>
+                          <br>
+                          <form class="needs-validation"  action="{% url 'app_ventas:aprobacion_pedidos' %}" method="POST" novalidate>
+                            {% csrf_token %}
+
+                            <div class="row ">
+                              
+                              &nbsp;&nbsp;&nbsp;<div class="form-group col-md-5">
+                                <label for="inputState" > Pedido</label>
+                                <select id="inputState" class="form-control" name="pedido" required>
+                                  <option selected value="">Seleccione</option>
+                                    {% for pRegistrado in pedidos %}
+                                    <option value="{{pRegistrado.pk}}">{{pRegistrado.pk}}-{{pRegistrado.cliente.nombres}} {{pRegistrado.cliente.apellidos}}-{{pRegistrado.producto.nombre_producto}}</option>
+                                    {% empty %}
+                                    <option value="">No hay pedidos...</option>
+                                    {% endfor %}
+                                
+                                </select>
+                              </div>
+
+                              <div class="form-group col-md-6">
+                                <label for="inputState">Comentario de aprobacion</label>
+                                <textarea class="form-control" aria-label="With textarea " name="descripcion_pedidos"></textarea>
+                              </div>
+
+                            </div>
+                            <br>
+                            <div col-md2>
+                              &nbsp;&nbsp;&nbsp; <button class="btn btn-primary btn-sm" type="submit" >Aprobar</button>
+                            </div> 
+                            <br>
+                          </form>
+
+                      
+                  </div>
+                </div>
+             </div>
+        </div>
+    </main>
+<br>
+     
+      <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <i class="fas fa-table me-1"></i>
+          Pedidos Aprobados
+        </div>
+        <div class="card-body">
+            <table id="datatablesSimple">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Detalle</th>
+                        <th>Vendedor</th>
+                        <th>Codigo pedido</th>
+                        <th>cliente</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Fecha de Pedido</th>
+                        <th> PDF</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    
+                      
+                      {% for pedidos in PAprobados %}
+                        <tr>
+                            <td>{{pedidos.pk}}</td>
+                            <td>{{pedidos.descripcion_pedidos}} </td>
+                            <td>{{pedidos.encargado}}</td>
+                            <td>{{pedidos.pedido.pk}}</td>
+                            <td>{{pedidos.pedido.cliente.nombres}} {{pedidos.pedido.cliente.apellidos}}</td>
+                            <td> {{pedidos.pedido.producto}}</td>
+                            <td> {{pedidos.pedido.cantidad}}</td>
+                            <td> {{pedidos.fecha_aprobacion}}</td>
+                            <td>
+                              <center>
+                               <a href="{% url 'app_ventas:PDF_PedidosA' pedidos.pk %}" class="btn btn-outline-danger btn-sm" role="button" aria-pressed="true" target="_blank data-toggle="tooltip" data-placement="left" title="Generar PDF""><b>PDF</b></a>
+                              </center>
+                            </td>
+                        </tr> 
+                        
+                      {% empty %}
+                        No hay registros...
+                      {% endfor %}
+                   
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+  </div>
+  
+  
+
+    
+
+{% endblock content %}
+
+{% block js %}
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+  </script>
+{% endblock js %}

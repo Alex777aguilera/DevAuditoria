@@ -1,0 +1,103 @@
+{% extends "principal_base.html" %}
+{% block titulo %}
+Ventas | Principal
+{% endblock titulo %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <div class="text-center">
+         <img src="https://th.bing.com/th/id/R.61420c958fef22e82419c06c23049a34?rik=lGt4h84LdJjvZQ&riu=http%3a%2f%2fwww.graphis.com%2fmedia%2fuploads%2fcache%2fb3%2fe4%2fb3e4bf424d71554226fc9c8bbe1d9c91.jpg&ehk=dg%2bU7lWY%2b5aG4qqNGBvrUQvvJCKnSHcYhsVpRtpmrtY%3d&risl=&pid=ImgRaw&r=0" class="img-fluid" alt="Responsive image" style="width:100px;">
+
+    </div>
+    
+    <br>
+    <div class="progress">
+  <div class="progress-bar bg-success" role="progressbar" style="width: 90%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{precio}} lps</div>
+</div>
+<div class="progress">
+  <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">{{totalP}} Productos</div>
+</div>
+<div class="progress">
+  <div class="progress-bar bg-warning" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">7.3% Inversion</div>
+</div>
+<div class="progress">
+  <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><div id="data"></div></div>
+</div>
+
+<br>
+
+<div id="chart_div" style="width: 800px; height: 500px;"></div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      var porcentaAnual = ({{precio}}*12/10500);
+      document.getElementById('data').innerHTML= porcentaAnual+"% crecimiento aproximado por año";
+      
+      google.charts.load('current', {'packages':['corechart', 'bar']});
+      google.charts.setOnLoadCallback(drawStuff);
+
+      function drawStuff() {
+
+        var button = document.getElementById('change-chart');
+        var chartDiv = document.getElementById('chart_div');
+
+        var data = google.visualization.arrayToDataTable([
+          ['Galaxy', 'Ventas', 'Inversion'],
+          ['Total precio productos', {{precio}}, 7.3],
+          ['Productos totales',,{{totalP}}],
+          ['Porcentaje de venta anual',30000 , 7.8],
+          
+        ]);
+
+        var materialOptions = {
+          width: 900,
+          chart: {
+            title: 'Estados Ventas',
+            subtitle: 'Reestructura del crecimiento financiero'
+          },
+          series: {
+            0: { axis: 'Ventas' }, // Bind series 0 to an axis named 'distance'.
+            1: { axis: 'Inversion' } // Bind series 1 to an axis named 'brightness'.
+          },
+          axes: {
+            y: {
+              Ventas: {label: 'Ventas'}, // Left y-axis.
+              Inversion: {side: 'right', label: 'Crecimiento de magnitude'} // Right y-axis.
+            }
+          }
+        };
+
+        var classicOptions = {
+          width: 900,
+          series: {
+            0: {targetAxisIndex: 0},
+            1: {targetAxisIndex: 1}
+          },
+          title: 'Nearby galaxies - Ventas on the left, Inversion on the right',
+          vAxes: {
+            // Adds titles to each axis.
+            0: {title: 'Ventas'},
+            1: {title: 'Crecimiento de magnitude'}
+          }
+        };
+
+        function drawMaterialChart() {
+          var materialChart = new google.charts.Bar(chartDiv);
+          materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+          button.innerText = 'Change to Classic';
+          button.onclick = drawClassicChart;
+        }
+
+        
+
+        drawMaterialChart();
+    };
+    </script>
+{% endblock content %}
+
+{% block js %}
+
+{% endblock js %}
