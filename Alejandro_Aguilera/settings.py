@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-$$50u4_9zgt-65$q)ayjmvs5*(yuqcd)cjfgw1r+6jyt(9^$!g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['xyzdev.herokuapp.com']
 
 
 # Application definition
@@ -148,11 +148,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+LOGIN_URL = '/'
+
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'global_static'),
 )
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -165,4 +168,6 @@ EMAIL_HOST_USER = 'ccdevdesarrollo@gmail.com'
 EMAIL_HOST_PASSWORD = 'Honduras2021*'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Activate Django-Heroku.
 django_heroku.settings(locals())
