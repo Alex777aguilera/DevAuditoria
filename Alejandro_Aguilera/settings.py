@@ -77,22 +77,6 @@ WSGI_APPLICATION = 'Alejandro_Aguilera.wsgi.application'
 
 DATABASES = {
 # Deploy
-    'default': {
-
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-
-        'NAME': 'bd_ventas',
-
-        'USER': 'postgres',
-
-        'PASSWORD': 'Alejandro189',
-
-        'HOST': 'localhost',
-
-        'PORT': '5432',
-    }
-
-# Local
     # 'default': {
 
     #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -107,6 +91,22 @@ DATABASES = {
 
     #     'PORT': '5432',
     # }
+
+# nube
+    'default': {
+
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+
+        'NAME': 'd96mup4fk7vkos',
+
+        'USER': 'egaterhwedlopq',
+
+        'PASSWORD': 'a59b1bddf17b91893716b214dc617d152eda335b29e57ab43ca36bbfe164b850',
+
+        'HOST': 'ec2-100-24-169-249.compute-1.amazonaws.com',
+
+        'PORT': '5432',
+    }
 }
 
 
