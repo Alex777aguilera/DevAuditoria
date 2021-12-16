@@ -460,6 +460,6 @@ def PDF_PedidosVendedor(request, empleado):#Pedidos realizados por vendedor
 		response = HttpResponse(content_type='application/pdf')
 		pisaStatus = pisa.CreatePDF(html,dest=response)
 		return response
-
+#hola
 def vista_grafica (request):
 	return render(request,'vista_grafica.html')
