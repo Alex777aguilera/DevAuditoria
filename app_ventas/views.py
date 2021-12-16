@@ -461,6 +461,5 @@ def PDF_PedidosVendedor(request, empleado):#Pedidos realizados por vendedor
 		pisaStatus = pisa.CreatePDF(html,dest=response)
 		return response
 
-#vista de proyecto grafica
 def vista_grafica (request):
 	return render(request,'vista_grafica.html')
