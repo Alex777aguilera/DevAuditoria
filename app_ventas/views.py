@@ -463,5 +463,4 @@ def PDF_PedidosVendedor(request, empleado):#Pedidos realizados por vendedor
 
 #vista de proyecto grafica
 def vista_grafica (request):
-	print ('Entro')
 	return render(request,'vista_grafica.html')
