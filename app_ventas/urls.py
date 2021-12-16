@@ -17,7 +17,6 @@ urlpatterns = [
  #Reportes
  path('PDF_PedidosA/<int:id>/', views.PDF_PedidosA, name='PDF_PedidosA'),	
  path('PDF_Pedidos/Vendedor/<int:empleado>/', views.PDF_PedidosVendedor, name='PDF_PedidosVendedor'),
-
 #vista de grafica
  path('vista/vista_grafica', views.vista_grafica, name='vista_grafica'),
 ]
