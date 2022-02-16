@@ -89,7 +89,7 @@ class Comentario(models.Model):
     id_respuesta = models.ForeignKey(Respuesta_Comentario,on_delete=models.CASCADE, null=False,blank=False)
     
     def __str__(self):
-        return "{}-{}-{}".format(self.pk,self.nombre, self.correo, self.descripcion_comentario)
+        return "{}-{}-{}".format(self.pk, self.correo, self.descripcion_comentario)
 
 class Categoria(models.Model):
     descripcion_categoria = models.CharField(max_length=20, null = False,blank=False)
