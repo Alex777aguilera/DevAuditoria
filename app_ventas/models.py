@@ -70,3 +70,53 @@ class Pedidos_Aprobados(models.Model):
     def __str__(self):
         return "{}-{}-{}-{}".format(self.pk,self.descripcion_pedidos,self.Pedido.pk,self.pedido.producto)
 
+
+
+####APIS
+
+class Respuesta_Comentario(models.Model):
+    descripcion_comentario = models.CharField(max_length=20, null = False,blank=False)
+    
+    def __str__(self):
+        return "{}-{}".format(self.pk,self.descripcion_comentario)
+
+
+class Comentario(models.Model):
+    nombre_actividad = models.CharField(max_length=100, null = False,blank=False)
+    correo = models.CharField(max_length=100, null = False,blank=False)
+    descripcion_comentario = models.CharField(max_length=20, null = False,blank=False)
+    fecha_limite = models.DateField( auto_now_add=True)
+    id_respuesta = models.ForeignKey(Respuesta_Comentario,on_delete=models.CASCADE, null=False,blank=False)
+    
+    def __str__(self):
+        return "{}-{}-{}".format(self.pk,self.nombre, self.correo, self.descripcion_comentario)
+
+class Categoria(models.Model):
+    descripcion_categoria = models.CharField(max_length=20, null = False,blank=False)
+    
+    def __str__(self):
+        return "{}-{}".format(self.pk,self.descripcion_categoria)
+
+class Grupo(models.Model):
+    descripcion_grupo = models.CharField(max_length=20, null = False,blank=False)
+    
+    def __str__(self):
+        return "{}-{}".format(self.pk,self.descripcion_grupo)
+
+
+class Producto(models.Model):
+    codigo = models.CharField(max_length=100, null = False,blank=False)
+    descripcion = models.CharField(max_length=100, null = False,blank=False)
+    sub_grupo = models.CharField(max_length=100, null = False,blank=False)
+    medida_mayor = models.CharField(max_length=100, null = False,blank=False)
+    medida_menor = models.CharField(max_length=100, null = False,blank=False)
+    precio_mayoreo = models.CharField(max_length=100, null = False,blank=False)
+    precio_detalle = models.CharField(max_length=100, null = False,blank=False)
+    equivalencia = models.CharField(max_length=100, null = False,blank=False)
+    imagen = models.BinaryField(blank = False, null = False, editable = True)
+    id_comentario = models.ForeignKey(Comentario,on_delete=models.CASCADE, null=False,blank=False)
+    id_categoria = models.ForeignKey(Categoria,on_delete=models.CASCADE, null=False,blank=False)
+    id_grupo = models.ForeignKey(Grupo,on_delete=models.CASCADE, null=False,blank=False)
+    
+    def __str__(self):
+        return "{}-{}-{}-{}-{}-{}".format(self.pk, self.codigo,self.descripcion, self.id_grupo, self.id_categoria, self.sub_grupo)

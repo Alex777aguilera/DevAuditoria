@@ -20,6 +20,17 @@ from django.template.loader import get_template
 from io import StringIO
 from io import BytesIO
 
+#####
+import requests
+import json
+import base64
+
+from rest_framework import serializers
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.parsers import JSONParser
+
 # Create your views here.
 
 #Pagina principal de inicio
