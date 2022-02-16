@@ -19,4 +19,5 @@ urlpatterns = [
  path('PDF_Pedidos/Vendedor/<int:empleado>/', views.PDF_PedidosVendedor, name='PDF_PedidosVendedor'),
 #vista de grafica
  path('vista/vista_grafica', views.vista_grafica, name='vista_grafica'),
+ path('Apiproductos', views.Apiproductos.as_view(), name='Apiproductos'),
 ]

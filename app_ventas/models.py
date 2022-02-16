@@ -82,7 +82,7 @@ class Respuesta_Comentario(models.Model):
 
 
 class Comentario(models.Model):
-    nombre_actividad = models.CharField(max_length=100, null = False,blank=False)
+    
     correo = models.CharField(max_length=100, null = False,blank=False)
     descripcion_comentario = models.CharField(max_length=20, null = False,blank=False)
     fecha_limite = models.DateField( auto_now_add=True)
