@@ -488,22 +488,22 @@ class Apiproductos(APIView):
             if Producto.objects.filter(pk=id_p).exists():
                 p = Producto.objects.get(pk=id_p)
                 #lista_prod = [{'pk':p.pk, 'nombre_producto':p.nombre_producto, 'descripcion':p.descripcion, 'fecha_expira':p.fecha_expira, 'precio':p.precio, 'cantidad':p.cantidad, 'tipo_producto':p.tipo_producto.id, 'fecha_registro':p.fecha_registro, 'imagen':base64.b64encode(str(p.img_producto).encode('utf-8'))}]
-                lista_prod = [{'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle.id, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario, 'id_categoria':p.id_categoria, 'id_grupo':p.id_grupo,}]
+                lista_prod = [{'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario.descripcion_comentario, 'id_categoria':p.id_categoria.descripcion_categoria, 'id_grupo':p.id_grupo.descripcion_grupo}]
                 ctx = {'Id':'Encontrado','producto':lista_prod}
                 return Response(ctx)
             else:
                 #productos = list(Producto.objects.all().values('pk','nombre_producto','descripcion','fecha_expira','precio','cantidad','tipo_producto','fecha_registro'))
+                p = Producto.objects.all()
                 for p in Producto.objects.all():
-                    lista_prod.append({'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle.id, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario, 'id_categoria':p.id_categoria, 'id_grupo':p.id_grupo,})
+                    lista_prod.append({'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario.descripcion_comentario,'id_categoria':p.id_categoria.descripcion_categoria,'id_grupo':p.id_grupo.descripcion_grupo})
                 
                 ctx = {'Id':'No Encontrado','producto':lista_prod}
                 return Response(ctx)
-        # else:
-        #     for p in Producto.objects.all():
-        #         lista_prod.append({'pk':p.pk, 'nombre_producto':p.nombre_producto, 'descripcion':p.descripcion, 'fecha_expira':p.fecha_expira, 'precio':p.precio, 'cantidad':p.cantidad, 'tipo_producto':p.tipo_producto.id, 'fecha_registro':p.fecha_registro, 'imagen':bytes(p.img_producto)})
-            
-        #     #productos = list(Producto.objects.all().values('pk','nombre_producto','descripcion','fecha_expira','precio','cantidad','tipo_producto','fecha_registro'))
-
+        else:
+            p = Producto.objects.all()
+            for p in Producto.objects.all():
+                lista_prod.append({ 'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario.descripcion_comentario,'id_categoria':p.id_categoria.descripcion_categoria, 'id_grupo':p.id_grupo.descripcion_grupo})
+                
         if lista_prod:
             ctx = {'Id':'Id no solicitado','producto':lista_prod}
             return Response(ctx)
@@ -520,7 +520,6 @@ class Apiproductos(APIView):
             Data = json.loads(request.body)
 
             codigo = Data['codigo']
-            #imagen = Data['imagen']
             descripcion = Data['descripcion']
             sub_grupo = Data['sub_grupo']
             medida_mayor = Data['medida_mayor']
@@ -531,55 +530,61 @@ class Apiproductos(APIView):
             id_comentario = Data['id_comentario']
             id_categoria = Data['id_categoria']
             id_grupo = Data['id_grupo']
+            imagen = Data['imagen']
             
+            print (codigo, descripcion, sub_grupo, medida_mayor, medida_menor, precio_mayoreo, precio_detalle, equivalencia, id_comentario, id_categoria, id_grupo)
+            print(imagen)
 
+            type(imagen)
             # Codigo producto
             if request.POST.get('codigo') == '':
                 errores['codigo'] = "Debe ingresar su Identidad"
 
             else:
-                query_producto["codigo"] = request.POST.get('codigo')
-            # img_producto
-            # if type(imagen) != str:
-            #     errores['imagen'] = "La imagen del producto no es un binario"
-            # else:
-            #     query_producto['imagen'] = bytes(imagen,'utf-8')
+                query_producto["codigo"] = codigo
+            
 
             # Descripcion
             if request.POST.get('descripcion') == '':
                 errores['descripcion'] = "Debe ingresar la descripcion"
             else:
-                query_producto["descripcion"] = request.POST.get('descripcion')
+                query_producto["descripcion"] = descripcion
 
             # Sub Grupo
             if request.POST.get('sub_grupo') == '':
                 errores['sub_grupo'] = "Debe ingresar el Sub grupo"
             else:
-                query_producto["sub_grupo"] = request.POST.get('sub_grupo')
+                query_producto["sub_grupo"] = sub_grupo
             
             # medida_mayor
             if request.POST.get('medida_mayor') == '':
                 errores['medida_mayor'] = "Debe ingresar la medida mayor"
             else:
-                query_producto["medida_mayor"] = request.POST.get('medida_mayor')
+                query_producto["medida_mayor"] = medida_mayor
 
             # medida_menor 
             if request.POST.get('medida_menor') == '':
                 errores['medida_menor'] = "Debe ingresar la medida menor"
             else:
-                query_producto["medida_menor"] = request.POST.get('medida_menor')
+                query_producto["medida_menor"] = medida_menor
+
+            # precio_mayoreo
+            if request.POST.get('precio_mayoreo') == '':
+                errores['precio_mayoreo'] = "Debe ingresar el precio de mayoreo"
+            else:
+                query_producto["precio_mayoreo"] = precio_mayoreo
 
             # precio_detalle 
             if request.POST.get('precio_detalle') == '':
                 errores['precio_detalle'] = "Debe ingresar la precio detale"
             else:
-                query_producto["precio_detalle"] = request.POST.get('precio_detalle')
+                query_producto["precio_detalle"] = precio_detalle
 
             # equivalencia 
             if request.POST.get('equivalencia') == '':
                 errores['equivalencia'] = "Debe ingresar la medida menor"
             else:
-                query_producto["equivalencia"] = request.POST.get('equivalencia')
+                query_producto["equivalencia"] = equivalencia
 
 
             # id_comentario
@@ -599,6 +604,12 @@ class Apiproductos(APIView):
                 errores['id_grupo'] = "El tipo de producto no es un entero"
             else:
                 query_producto['id_grupo'] = Grupo.objects.get(pk=int(id_grupo))
+
+            # img_producto
+            if type(imagen) != str:
+                errores['imagen'] = "La imagen del producto no es un binario"
+            else:
+                query_producto['imagen'] = bytes(imagen,'utf-8')
 
             print(errores)
 

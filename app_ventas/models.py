@@ -119,4 +119,4 @@ class Producto(models.Model):
     id_grupo = models.ForeignKey(Grupo,on_delete=models.CASCADE, null=False,blank=False)
     
     def __str__(self):
-        return "{}-{}-{}-{}-{}-{}".format(self.pk, self.codigo,self.descripcion, self.id_grupo, self.id_categoria, self.sub_grupo)
+        return "{}-{}-{}-{}-{}-{}-{}".format(self.pk, self.codigo,self.descripcion, self.id_grupo, self.id_comentario, self.id_categoria, self.sub_grupo)
