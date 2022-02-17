@@ -481,31 +481,53 @@ class Apiproductos(APIView):
     ctx = {}
     def get(self, request, format=None):
         lista_prod = []
+        lista_g = []
         if request.body:#Suponiendo que se enviara el id en el Json
             Data = json.loads(request.body)
             id_p = Data['ID'] #Id del tipo de producto a filtrar
+            
             print(id_p)
+            
             if Producto.objects.filter(pk=id_p).exists():
                 p = Producto.objects.get(pk=id_p)
-                #lista_prod = [{'pk':p.pk, 'nombre_producto':p.nombre_producto, 'descripcion':p.descripcion, 'fecha_expira':p.fecha_expira, 'precio':p.precio, 'cantidad':p.cantidad, 'tipo_producto':p.tipo_producto.id, 'fecha_registro':p.fecha_registro, 'imagen':base64.b64encode(str(p.img_producto).encode('utf-8'))}]
+                g = Grupo.objects.all()
+
                 lista_prod = [{'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario.descripcion_comentario, 'id_categoria':p.id_categoria.descripcion_categoria, 'id_grupo':p.id_grupo.descripcion_grupo}]
-                ctx = {'Id':'Encontrado','producto':lista_prod}
+                for g in Grupo.objects.all():
+                    #lista_prod = [{'pk':p.pk, 'nombre_producto':p.nombre_producto, 'descripcion':p.descripcion, 'fecha_expira':p.fecha_expira, 'precio':p.precio, 'cantidad':p.cantidad, 'tipo_producto':p.tipo_producto.id, 'fecha_registro':p.fecha_registro, 'imagen':base64.b64encode(str(p.img_producto).encode('utf-8'))}]
+                    
+                    lista_g.append({'pk':g.pk, 'descripcion_grupo':g.descripcion_grupo})
+
+                ctx = {'Id':'Encontrado','producto':lista_prod, 'grupo':lista_g}
                 return Response(ctx)
             else:
                 #productos = list(Producto.objects.all().values('pk','nombre_producto','descripcion','fecha_expira','precio','cantidad','tipo_producto','fecha_registro'))
                 p = Producto.objects.all()
+                g = Grupo.objects.all()
+
                 for p in Producto.objects.all():
                     lista_prod.append({'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario.descripcion_comentario,'id_categoria':p.id_categoria.descripcion_categoria,'id_grupo':p.id_grupo.descripcion_grupo})
-                
-                ctx = {'Id':'No Encontrado','producto':lista_prod}
+
+                for g in Grupo.objects.all():
+                    #lista_prod = [{'pk':p.pk, 'nombre_producto':p.nombre_producto, 'descripcion':p.descripcion, 'fecha_expira':p.fecha_expira, 'precio':p.precio, 'cantidad':p.cantidad, 'tipo_producto':p.tipo_producto.id, 'fecha_registro':p.fecha_registro, 'imagen':base64.b64encode(str(p.img_producto).encode('utf-8'))}]
+                    
+                    lista_g.append({'pk':g.pk, 'descripcion_grupo':g.descripcion_grupo})   
+
+                ctx = {'Id':'No Encontrado','producto':lista_prod, 'grupo':lista_g}
                 return Response(ctx)
         else:
             p = Producto.objects.all()
+            g = Grupo.objects.all()
+
             for p in Producto.objects.all():
-                lista_prod.append({ 'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario.descripcion_comentario,'id_categoria':p.id_categoria.descripcion_categoria, 'id_grupo':p.id_grupo.descripcion_grupo})
-                
+                lista_prod.append({'pk':p.pk, 'codigo':p.codigo, 'descripcion':p.descripcion, 'sub_grupo':p.sub_grupo, 'medida_mayor':p.medida_mayor, 'medida_menor':p.medida_menor, 'precio_mayoreo':p.precio_mayoreo, 'precio_detalle':p.precio_detalle, 'equivalencia':p.equivalencia, 'imagen':bytes(p.imagen), 'id_comentario':p.id_comentario.descripcion_comentario,'id_categoria':p.id_categoria.descripcion_categoria, 'id_grupo':p.id_grupo.descripcion_grupo})
+
+            for g in Grupo.objects.all():
+                    #lista_prod = [{'pk':p.pk, 'nombre_producto':p.nombre_producto, 'descripcion':p.descripcion, 'fecha_expira':p.fecha_expira, 'precio':p.precio, 'cantidad':p.cantidad, 'tipo_producto':p.tipo_producto.id, 'fecha_registro':p.fecha_registro, 'imagen':base64.b64encode(str(p.img_producto).encode('utf-8'))}]
+                lista_g.append({'pk':g.pk, 'descripcion_grupo':g.descripcion_grupo})   
+
         if lista_prod:
-            ctx = {'Id':'Id no solicitado','producto':lista_prod}
+            ctx = {'Id':'Id no solicitado','producto':lista_prod, 'grupo': lista_g}
             return Response(ctx)
         else:
             ctx = {'error','No hay Registros'}
